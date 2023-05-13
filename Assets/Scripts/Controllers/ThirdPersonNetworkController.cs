@@ -8,8 +8,12 @@ using UnityEngine.InputSystem;
 /* Note: animations are called via the controller for both the character and capsule using animator null checks
  */
 
+
+
 namespace StarterAssets
 {
+
+
     [RequireComponent(typeof(CharacterController))]
 #if ENABLE_INPUT_SYSTEM 
     [RequireComponent(typeof(PlayerInput))]
@@ -100,6 +104,8 @@ namespace StarterAssets
         private int _animIDFreeFall;
         private int _animIDMotionSpeed;
 
+        private bool isFlying = false;
+
 #if ENABLE_INPUT_SYSTEM 
         private PlayerInput _playerInput;
 #endif
@@ -116,11 +122,12 @@ namespace StarterAssets
         {
             get
             {
-                #if ENABLE_INPUT_SYSTEM
-                                return _playerInput.currentControlScheme == "KeyboardMouse";
-                #else
-                                return false;
-                #endif
+                return true;
+                //#if ENABLE_INPUT_SYSTEM
+                //                return _playerInput.currentControlScheme == "KeyboardMouse";
+                //#else
+                //                return false;
+                //#endif
             }
         }
 
@@ -215,7 +222,7 @@ namespace StarterAssets
                 float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
 
                 _cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier;
-                _cinemachineTargetPitch += _input.look.y * deltaTimeMultiplier;
+                _cinemachineTargetPitch -= _input.look.y * deltaTimeMultiplier;
             }
 
             // clamp our rotations so our values are limited 360 degrees
@@ -227,8 +234,14 @@ namespace StarterAssets
                 _cinemachineTargetYaw, 0.0f);
         }
 
+        private void OnToggleFlying()
+        {
+            isFlying = !isFlying;
+        }
+
         private void Move()
         {
+
             
             // set target speed based on move speed, sprint speed and if sprint is pressed
             float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
@@ -364,7 +377,6 @@ namespace StarterAssets
                 _verticalVelocity += Gravity * Time.deltaTime;
             }
         }
-
         private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
         {
             if (lfAngle < -360f) lfAngle += 360f;

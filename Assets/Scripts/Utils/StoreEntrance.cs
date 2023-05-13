@@ -20,3 +20,9 @@ public class StoreEntrance : MonoBehaviour
     }
 
 }
+enum Scenes
+{
+    menu = 0,
+    customer = 1,
+    merchant = 2,
+}
