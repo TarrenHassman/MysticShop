@@ -19,9 +19,3 @@ public class SceneChange : MonoBehaviour
         UnityEngine.SceneManagement.SceneManager.LoadScene(sceneBuildIndex);
     }
 }
-
-enum Scenes {
-    menu = 0,
-    customer = 1,
-    merchant = 2,
-}
