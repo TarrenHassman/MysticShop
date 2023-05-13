@@ -1,12 +1,12 @@
 # MysticShop
 A 3d Distributed Marketplace built with Unity and IPFS
 
-#Netcode for GameObjects
+# Netcode for GameObjects
 
-#Relay
+# Relay
 
-#Lobby
+# Lobby
 
-#ThirdWeb
+# ThirdWeb
 
-#IPFS
+# IPFS
