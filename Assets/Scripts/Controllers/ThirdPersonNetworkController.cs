@@ -67,7 +67,7 @@ namespace StarterAssets
 
         [Header("Cinemachine")]
         [Tooltip("The follow target set in the Cinemachine Virtual Camera that the camera will follow")]
-        public GameObject CinemachineCameraTarget;
+        public GameObject CinemachineCameraTarget = null;
 
         [Tooltip("How far in degrees can you move the camera up")]
         public float TopClamp = 70.0f;
@@ -134,6 +134,7 @@ namespace StarterAssets
 
         private void Awake()
         {
+
             // get a reference to our main camera
             if (_mainCamera == null)
             {
@@ -143,12 +144,7 @@ namespace StarterAssets
             {
                 _cinemachineVirtualCamera = FindAnyObjectByType<CinemachineVirtualCamera>();
             }
-              _input = GetComponent<StarterAssetsInputs>();
-     
-        }
-
-        private void Start()
-        {
+            _input = GetComponent<StarterAssetsInputs>();
             _cinemachineTargetYaw = CinemachineCameraTarget.transform.rotation.eulerAngles.y;
             
             _hasAnimator = TryGetComponent(out _animator);
@@ -161,8 +157,10 @@ namespace StarterAssets
             _fallTimeoutDelta = FallTimeout;
         }
 
+
     public override void OnNetworkSpawn(){
         base.OnNetworkSpawn();
+        Debug.Log("OnNetworkSpawn");
         if (!IsOwner) gameObject.GetComponent<PlayerInput>().enabled = false;   
         if(IsClient && IsOwner){
             _playerInput = GetComponent<PlayerInput>();
@@ -286,7 +284,7 @@ namespace StarterAssets
             if (_input.move != Vector2.zero)
             {
                 _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
-                                  _mainCamera.transform.eulerAngles.y;
+                    _mainCamera.transform.eulerAngles.y;
                 float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
                     RotationSmoothTime);
 

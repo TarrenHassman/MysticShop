@@ -283,7 +283,11 @@ PrefabInstance:
     - target: {fileID: 2070925441746177913, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
       propertyPath: m_Follow
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2045800710}
+    - target: {fileID: 2070925441746177913, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
+      propertyPath: m_LookAt
+      value: 
+      objectReference: {fileID: 2045800710}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
 --- !u!1 &445805562
@@ -793,11 +797,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ed2a051c32b4fe47a5e4fb95c20b03f, type: 3}
---- !u!1 &784951954 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1859804926077688, guid: 9ed2a051c32b4fe47a5e4fb95c20b03f, type: 3}
-  m_PrefabInstance: {fileID: 784951953}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1246507947
 GameObject:
   m_ObjectHideFlags: 0
@@ -827,12 +826,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcff8cd289be541cc804f5646adfd676, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objects:
-  - {fileID: 1634937043}
-  - {fileID: 784951954}
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!4 &1246507949
 Transform:
   m_ObjectHideFlags: 0
@@ -909,11 +902,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
---- !u!1 &1634937043 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3058623154768238228, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
-  m_PrefabInstance: {fileID: 1634937042}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1937369241
 GameObject:
   m_ObjectHideFlags: 0
@@ -1014,6 +1002,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!4 &2045800710 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8338988566280778637, guid: 64dce48905ffd9b4293e595fa6941544, type: 3}
+  m_PrefabInstance: {fileID: 1634937042}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2055526825
 PrefabInstance:
   m_ObjectHideFlags: 0

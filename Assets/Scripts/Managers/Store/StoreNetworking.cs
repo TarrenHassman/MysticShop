@@ -71,7 +71,6 @@ public class StoreNetworking : MonoBehaviour
             Data = LobbyData.instance.data
         };
         hostLobby = await LobbyService.Instance.CreateLobbyAsync(storeName, maxPlayers, options);
-        Debug.Log(hostLobby.Id);
         LobbyData.instance.changeLobby(hostLobby);
         }catch (LobbyServiceException e){
            Debug.Log(e);
