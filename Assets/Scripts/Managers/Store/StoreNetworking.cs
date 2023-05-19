@@ -40,10 +40,11 @@ public class StoreNetworking : MonoBehaviour
 
     protected void Update(){
         LobbyHeartbeatAsync();
+
     }
 
 
-  private async void LobbyHeartbeatAsync(){
+    private async void LobbyHeartbeatAsync(){
         if (hostLobby != null){
             heartbeatTimer -= Time.deltaTime;
             if (heartbeatTimer < 0f){
@@ -201,10 +202,8 @@ private async void DeleteLobby(){
             Debug.Log(e);
     }}
 
-    [Command]
-    private async void LeaveLobby(){
+    public async void LeaveLobby(){
          try{
-            //Mak
         await LobbyService.Instance.RemovePlayerAsync(clientLobby.Id, AuthenticationService.Instance.PlayerId);
         }catch (LobbyServiceException e){
             Debug.Log(e);

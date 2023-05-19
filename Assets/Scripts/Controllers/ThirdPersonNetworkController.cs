@@ -32,7 +32,7 @@ namespace StarterAssets
         public float RotationSmoothTime = 0.12f;
 
         [Tooltip("Acceleration and deceleration")]
-        public float SpeedChangeRate = 10.0f;
+        public float SpeedChangeRate = 30.0f;
 
         public AudioClip LandingAudioClip;
         public AudioClip[] FootstepAudioClips;
@@ -167,15 +167,22 @@ namespace StarterAssets
             _playerInput.enabled = true;
             _cinemachineVirtualCamera.Follow = transform.Find("PlayerCameraRoot");
         }
-        }
+    }
 
-        private void Update()
+
+
+        private void FixedUpdate()
         {
+
             if(IsOwner){
             _hasAnimator = TryGetComponent(out _animator);
-            JumpAndGravity();
-            GroundedCheck();
-            Move();
+                if(isFlying){
+                    Fly();
+                }else{
+                    JumpAndGravity();
+                }
+                Move();
+                GroundedCheck();
             }
         }
  
@@ -207,6 +214,7 @@ namespace StarterAssets
             {
                 _animator.SetBool(_animIDGrounded, Grounded);
             }
+
         }
 
 
@@ -220,7 +228,7 @@ namespace StarterAssets
                 float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
 
                 _cinemachineTargetYaw += _input.look.x * deltaTimeMultiplier;
-                _cinemachineTargetPitch -= _input.look.y * deltaTimeMultiplier;
+                _cinemachineTargetPitch += _input.look.y * deltaTimeMultiplier;
             }
 
             // clamp our rotations so our values are limited 360 degrees
@@ -235,6 +243,11 @@ namespace StarterAssets
         private void OnToggleFlying()
         {
             isFlying = !isFlying;
+            _verticalVelocity = isFlying ? 0f : _verticalVelocity;
+            MoveSpeed = isFlying ? 6f : 2f;
+            if(_hasAnimator){
+                _animator.SetBool("Flying", isFlying);
+            }
         }
 
         private void Move()
@@ -293,7 +306,8 @@ namespace StarterAssets
             }
 
 
-            Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
+            Vector3 targetDirection = Quaternion.Euler(_cinemachineTargetPitch, _targetRotation, 0) * Vector3.forward;
+
 
             // move the player
             _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
@@ -305,6 +319,29 @@ namespace StarterAssets
                 _animator.SetFloat(_animIDSpeed, _animationBlend);
                 _animator.SetFloat(_animIDMotionSpeed, inputMagnitude);
             }
+        }
+
+        private void Fly(){
+                  // Jump
+                if (_input.jump)
+                {
+                    // the square root of H * -2 * G = how much velocity needed to reach desired height
+                    _verticalVelocity = Mathf.Lerp(0, JumpHeight * -2f * Gravity, Time.deltaTime * 5f);
+
+                    // update animator if using character
+                    if (_hasAnimator)
+                    {
+                        _animator.SetBool(_animIDJump, true);
+                    }
+                }
+
+                if(_verticalVelocity > 0){
+                    _verticalVelocity = Mathf.Lerp(_verticalVelocity, 0, Time.deltaTime * 5f);
+                    _input.jump = false;
+                    if(Grounded){
+                        _animator.SetBool(_animIDJump, false);
+                    }
+                }
         }
 
         private void JumpAndGravity()
@@ -326,7 +363,7 @@ namespace StarterAssets
                 {
                     _verticalVelocity = -2f;
                 }
-
+         
                 // Jump
                 if (_input.jump && _jumpTimeoutDelta <= 0.0f)
                 {
@@ -339,6 +376,7 @@ namespace StarterAssets
                         _animator.SetBool(_animIDJump, true);
                     }
                 }
+
 
                 // jump timeout
                 if (_jumpTimeoutDelta >= 0.0f)
@@ -370,7 +408,7 @@ namespace StarterAssets
             }
 
             // apply gravity over time if under terminal (multiply by delta time twice to linearly speed up over time)
-            if (_verticalVelocity < _terminalVelocity)
+            if (_verticalVelocity < _terminalVelocity && !isFlying)
             {
                 _verticalVelocity += Gravity * Time.deltaTime;
             }

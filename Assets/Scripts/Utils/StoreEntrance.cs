@@ -10,7 +10,6 @@ public class StoreEntrance : MonoBehaviour
 
   protected void  OnTriggerEnter(Collider other)
     {
-        Debug.Log(lobbyCode);
         if(other.tag == "Player"){
             //ChangeScene();
             //JoinLobby();

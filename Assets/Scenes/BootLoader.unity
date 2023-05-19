@@ -1547,7 +1547,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c2176c23962e4e5b83e7a61fe3ab4ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  circle: {fileID: 0}
+  circle: {fileID: 6085803555977049720, guid: 679db2332f47e4ec38170a1067e446a2, type: 3}
 --- !u!114 &2076619137
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1596,6 +1596,11 @@ MonoBehaviour:
     NetworkPrefabs:
     - Override: 0
       Prefab: {fileID: 4088379209223038405, guid: fb176f704f7ce484387dc539a303b567, type: 3}
+      SourcePrefabToOverride: {fileID: 0}
+      SourceHashToOverride: 0
+      OverridingTargetPrefab: {fileID: 0}
+    - Override: 0
+      Prefab: {fileID: 6085803555977049720, guid: 679db2332f47e4ec38170a1067e446a2, type: 3}
       SourcePrefabToOverride: {fileID: 0}
       SourceHashToOverride: 0
       OverridingTargetPrefab: {fileID: 0}
