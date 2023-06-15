@@ -11,6 +11,7 @@ using Unity.Networking.Transport.Relay;
 using Unity.Netcode.Transports.UTP;
 using Unity.Netcode;
 using System.Threading.Tasks;
+using System;
 
 public class StoreNetworking : MonoBehaviour
 {
@@ -55,17 +56,23 @@ public class StoreNetworking : MonoBehaviour
         }
     }
     public async void CreateLobby(){
-       try{
-        string storeName = "My Lobby";
+        //Get CID from PlayerPrefs
+        string cid = PlayerPrefs.HasKey("CID") ? PlayerPrefs.GetString("CID") : Guid.NewGuid().ToString();
+        //Get Host name
+        string hostName = PlayerPrefs.HasKey("HostName") ? PlayerPrefs.GetString("HostName") : Guid.NewGuid().ToString();
+        //Get Host name
+        string storeName = PlayerPrefs.HasKey("StoreName") ? PlayerPrefs.GetString("StoreName") : Guid.NewGuid().ToString();
+        try
+        {
         int maxPlayers = 4;
         string relay = await CreateRelay();
         LobbyData.instance.AddData("joinCode", new DataObject(DataObject.VisibilityOptions.Public,relay));
-        LobbyData.instance.AddData("CID", new DataObject(DataObject.VisibilityOptions.Public,"CID"));
+        LobbyData.instance.AddData("CID", new DataObject(DataObject.VisibilityOptions.Public,cid));
         CreateLobbyOptions options = new(){
             IsPrivate = false,
             Player = new Player() {
                 Data = new Dictionary<string, PlayerDataObject>(){
-                    {"Name", new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member,"Name")},
+                    {hostName, new PlayerDataObject(PlayerDataObject.VisibilityOptions.Member,"Name")},
 
                 }
             },
@@ -73,11 +80,11 @@ public class StoreNetworking : MonoBehaviour
         };
         hostLobby = await LobbyService.Instance.CreateLobbyAsync(storeName, maxPlayers, options);
         LobbyData.instance.changeLobby(hostLobby);
+
         }catch (LobbyServiceException e){
            Debug.Log(e);
     }}
 
-[Command]
     public async Task<string> CreateRelay(){
         try{
             Allocation allocation = await RelayService.Instance.CreateAllocationAsync(15);
@@ -97,10 +104,7 @@ public class StoreNetworking : MonoBehaviour
        };
     }
 
-
-
-    [Command]
-    private async void UpdateLobby(string cid){
+    public async void UpdateLobby(string cid){
         hostLobby = await LobbyService.Instance.UpdateLobbyAsync(hostLobby.Id,
         new UpdateLobbyOptions{Data = new Dictionary<string, DataObject>(){
                 {"CID", new DataObject(DataObject.VisibilityOptions.Public,cid)},
@@ -123,12 +127,12 @@ public class StoreNetworking : MonoBehaviour
         }catch (LobbyServiceException e){
             Debug.Log(e);
     }}
-[Command]
-private async void DeleteLobby(){
-    try{
-        await LobbyService.Instance.DeleteLobbyAsync(hostLobby.Id);
-    }catch (LobbyServiceException e){
-            Debug.Log(e);
+    [Command]
+    private async void DeleteLobby(){
+        try{
+            await LobbyService.Instance.DeleteLobbyAsync(hostLobby.Id);
+        }catch (LobbyServiceException e){
+                Debug.Log(e);
     }}
 
 
@@ -157,12 +161,11 @@ private async void DeleteLobby(){
             };
             QueryResponse query = await LobbyService.Instance.QueryLobbiesAsync(options);
             int index = 0;
-            Debug.Log("here");
             foreach (Lobby lobby in query.Results){
-                Debug.Log("here");
                 GameObject obj = Instantiate(circle, new Vector3(index++,1,2), Quaternion.identity);
                 StoreEntrance trigger = obj.AddComponent<StoreEntrance>();
                 trigger.lobbyCode = lobby.Id;
+                Debug.Log(lobby.Id);
             }
         }catch (LobbyServiceException e){
             Debug.Log(e);
@@ -184,11 +187,11 @@ private async void DeleteLobby(){
 
     public async void JoinLobby(string lobbyCode){
         clientLobby = await Lobbies.Instance.JoinLobbyByIdAsync(lobbyCode);
+        LobbyData.instance.clientLobby = clientLobby;
         JoinRelay(clientLobby.Data["joinCode"].Value);
         
     }
 
-        [Command]
     public async void JoinRelay(string joinCode){
         try{
             JoinAllocation joinAllocation = await RelayService.Instance.JoinAllocationAsync(joinCode);

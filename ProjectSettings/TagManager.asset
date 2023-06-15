@@ -6,6 +6,9 @@ TagManager:
   tags:
   - InventoryUI
   - CinemachineTarget
+  - Ground
+  - ListingUI
+  - Listable
   layers:
   - Default
   - TransparentFX

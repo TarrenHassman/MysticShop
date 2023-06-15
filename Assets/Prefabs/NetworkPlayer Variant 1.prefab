@@ -1194,6 +1194,7 @@ GameObject:
   - component: {fileID: -8860761865382583357}
   - component: {fileID: 3943970325901487757}
   - component: {fileID: 4329094262081704639}
+  - component: {fileID: 6875520434156476744}
   m_Layer: 8
   m_Name: NetworkPlayer Variant 1
   m_TagString: Player
@@ -1442,6 +1443,7 @@ MonoBehaviour:
   BottomClamp: -30
   CameraAngleOverride: 0
   LockCameraPosition: 0
+  OSHA: {fileID: 1819909466946734941, guid: 2cd02e05e2a124c5b9443bb0b633b597, type: 3}
 --- !u!114 &3943970325901487757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1482,6 +1484,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TransitionStateInfoList: []
   m_Animator: {fileID: 7284338488371668229}
+--- !u!114 &6875520434156476744
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4088379209223038405}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53e1a29ce077e4b77bba3ba573ecaa7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4143584106279343351
 GameObject:
   m_ObjectHideFlags: 0

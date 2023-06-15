@@ -11,8 +11,6 @@ public class StoreEntrance : MonoBehaviour
   protected void  OnTriggerEnter(Collider other)
     {
         if(other.tag == "Player"){
-            //ChangeScene();
-            //JoinLobby();
             UnityEngine.SceneManagement.SceneManager.LoadScene(sceneBuildIndex+1);
             StoreNetworking.instance.JoinLobby(lobbyCode);
         }

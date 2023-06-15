@@ -9,14 +9,16 @@ public class Inventory : MonoBehaviour
   private void Awake()
   {
     items = new List<ItemObject>();
+        inventoryPanel = GameObject.Find("Main").gameObject.GetComponent<CanvasGroup>();
   }
 
   public void Start(){
-        inventoryPanel = GameObject.Find("Inventory").GetComponent<CanvasGroup>();
+        inventoryPanel.alpha = 0;
+        inventoryPanel.interactable = false;
   }
   void Update()
   {
-    if (Input.GetKeyDown(KeyCode.E))
+    if (Input.GetKeyDown(KeyCode.I))
     {
       isVisible = !isVisible;
       inventoryPanel.alpha = isVisible ? 1 : 0;
