@@ -10,6 +10,9 @@ using UnityEditor;
 namespace JSONExporter
 {
 
+//TODO: Understand how Json is formatted and how to use it to create a scene
+//TODO: Specifically how Components are formatted
+
 public class JEScene : JEObject
 {
 
@@ -24,6 +27,7 @@ public class JEScene : JEObject
         // Unity has no root object, so collect root game objects this way
         object[] objects = GameObject.FindObjectsOfType(typeof (GameObject));
 
+        // Collect root game objects while ignoring specific tags
         foreach (object o in objects)
         {
             GameObject go = (GameObject) o;
@@ -85,6 +89,7 @@ public class JEScene : JEObject
 
     static JEGameObject Traverse(GameObject obj, List<string> ignoreTags, bool disabledGOs, bool disabledComponents, bool includeUnknown, JEGameObject jparent = null)
     {
+        // ignore disabled game objects and game objects with specific tags
         if ((!disabledGOs && !obj.activeSelf) || ignoreTags.Contains(obj.tag))
             return null;
         JEGameObject jgo = new JEGameObject(obj, jparent, disabledComponents, includeUnknown);

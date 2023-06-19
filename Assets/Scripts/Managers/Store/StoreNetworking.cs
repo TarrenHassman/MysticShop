@@ -55,9 +55,10 @@ public class StoreNetworking : MonoBehaviour
             }
         }
     }
+#nullable enable
     public async void CreateLobby(){
         //Get CID from PlayerPrefs
-        string cid = PlayerPrefs.HasKey("CID") ? PlayerPrefs.GetString("CID") : Guid.NewGuid().ToString();
+        string? cid = PlayerPrefs.HasKey("CID") ? PlayerPrefs.GetString("CID") : null;
         //Get Host name
         string hostName = PlayerPrefs.HasKey("HostName") ? PlayerPrefs.GetString("HostName") : Guid.NewGuid().ToString();
         //Get Host name
@@ -84,7 +85,7 @@ public class StoreNetworking : MonoBehaviour
         }catch (LobbyServiceException e){
            Debug.Log(e);
     }}
-
+#nullable disable
     public async Task<string> CreateRelay(){
         try{
             Allocation allocation = await RelayService.Instance.CreateAllocationAsync(15);
@@ -95,7 +96,6 @@ public class StoreNetworking : MonoBehaviour
             );
             NetworkManager.Singleton.GetComponent<UnityTransport>().SetRelayServerData(relayServerData);
             NetworkManager.Singleton.StartHost();
-                  Debug.Log(joinCode);
             return joinCode;
             
         }catch (RelayServiceException e){
@@ -142,7 +142,7 @@ public class StoreNetworking : MonoBehaviour
 [Command]
     private async void ListLobbies(){
         try{
-            //Make filter options variable and changable by menu
+            //Make filter options variable and changeable by menu
             QueryLobbiesOptions options = new(){
                 Count = 10,
                 Filters = new List<QueryFilter>{

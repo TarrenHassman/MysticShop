@@ -7,6 +7,7 @@ using Unity.Netcode;
 using UnityEngine.UI;
 using System;
 using Newtonsoft.Json;
+using Object = UnityEngine.Object;
 
 public class BuildingManager : NetworkBehaviour
 {
@@ -126,8 +127,7 @@ public class BuildingManager : NetworkBehaviour
         justClosedMenu = false;
     }
     private void PlaceObject(){
-            AddToMap(pendingObj);
-            pendingObj.layer = 3;
+        pendingObj.layer = 3;
             pendingObj = null;
 
     }
@@ -188,16 +188,5 @@ public class BuildingManager : NetworkBehaviour
     void ToggleGrid(InputAction.CallbackContext context){
         isGrid = !isGrid;
     }
-
-    private void AddToMap(GameObject o)
-    {
-        SavableEntity e = Map.instance.convertToSavable(o);
-        if(Map.instance.objects.ContainsKey(e.Id)){
-            Map.instance.objects[e.Id] = e;
-        }else{
-            Map.instance.objects.Add(e.Id, e);
-        }
-    }
-
 
 }

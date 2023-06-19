@@ -162,13 +162,13 @@ namespace StarterAssets
             _jumpTimeoutDelta = JumpTimeout;
             _fallTimeoutDelta = FallTimeout;
         }
-
+#nullable enable
         private void Start()
         {
-            string cid = "Don'tLoad";
+            string? cid = null;
             if (IsHost)
             {
-                cid = PlayerPrefs.HasKey("CID") ? PlayerPrefs.GetString("CID") : "Don'tLoad";
+                cid = PlayerPrefs.HasKey("CID") ? PlayerPrefs.GetString("CID") : null;
             }
             else
             {
@@ -177,9 +177,9 @@ namespace StarterAssets
                     cid = LobbyData.instance.clientLobby.Data["CID"].Value;
                 }
             }
-            // Map.instance.GenerateMap(cid);
+            IPFS.Instance.LoadScene(cid);
         }
-
+#nullable disable
         public override void OnNetworkSpawn(){
             base.OnNetworkSpawn();
             if (!IsOwner) gameObject.GetComponent<PlayerInput>().enabled = false;   

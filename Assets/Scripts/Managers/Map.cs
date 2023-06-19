@@ -77,7 +77,7 @@ public class Map : MonoBehaviour
 
     public GameObject convertFromSavable(SavableEntity e)
     {
-        ExportMeshToOBJ exporter = new ExportMeshToOBJ();
+        // ExportMeshToOBJ exporter = new ExportMeshToOBJ();
         GameObject o = new GameObject();
         o.name = e.Id;
         o.transform.SetPositionAndRotation(e.pos, e.rotation);
@@ -85,25 +85,25 @@ public class Map : MonoBehaviour
         MeshFilter filter = o.AddComponent<MeshFilter>();
         //Convert string to mesh
         Debug.Log(e.mesh);
-        Mesh m = exporter.OBJtoMesh(e.mesh);
-        filter.mesh = m;
+        // Mesh m = exporter.OBJtoMesh(e.mesh);
+        // filter.mesh = m;
         MeshRenderer render = o.AddComponent<MeshRenderer>();
         o.AddComponent<MeshCollider>();
         o.layer = 3;
         return o;
     }
-    public SavableEntity convertToSavable(GameObject o)
+    public void convertToSavable(GameObject o)
     {   
-        ExportMeshToOBJ exporter = new ExportMeshToOBJ();
-        string mesh = exporter.ExportToOBJ(o);
-        Debug.Log(mesh);
-        return new SavableEntity(
-             o.name.Length < 36 ? Guid.NewGuid().ToString() : o.name.Substring(0, 36),
-               o.transform.position,
-               o.transform.rotation,
-               o.transform.localScale,
-               mesh
-            );
+        // ExportMeshToOBJ exporter = new ExportMeshToOBJ();
+        // string mesh = exporter.ExportToOBJ(o);
+        // Debug.Log(mesh);
+        // return new SavableEntity(
+        //      o.name.Length < 36 ? Guid.NewGuid().ToString() : o.name.Substring(0, 36),
+        //        o.transform.position,
+        //        o.transform.rotation,
+        //        o.transform.localScale,
+        //        mesh
+        //     );
     }
     [Command]
     public void ImportOBJ(string filePath)

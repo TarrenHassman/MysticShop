@@ -403,7 +403,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8238474237598859631, guid: 1f1e4905f98fd42beaef0375ec4113c2, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8238474237598859631, guid: 1f1e4905f98fd42beaef0375ec4113c2, type: 3}
       propertyPath: m_AnchorMax.x
@@ -629,7 +629,7 @@ GameObject:
   - component: {fileID: 229667314}
   m_Layer: 5
   m_Name: Canvas
-  m_TagString: Untagged
+  m_TagString: Manager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -772,7 +772,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5945594352754557827, guid: e8d2f2c34bdab488391d08ff708cd6ee, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5945594352754557827, guid: e8d2f2c34bdab488391d08ff708cd6ee, type: 3}
       propertyPath: m_AnchorMax.x
@@ -888,7 +888,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7776569946521277809, guid: e8d2f2c34bdab488391d08ff708cd6ee, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -303.39398
+      value: -303.39462
       objectReference: {fileID: 0}
     - target: {fileID: 8194970969681779678, guid: e8d2f2c34bdab488391d08ff708cd6ee, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1488,6 +1488,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Quantum Console
       objectReference: {fileID: 0}
+    - target: {fileID: 1263217620473054, guid: 9ed2a051c32b4fe47a5e4fb95c20b03f, type: 3}
+      propertyPath: m_TagString
+      value: Manager
+      objectReference: {fileID: 0}
     - target: {fileID: 143246068027918357, guid: 9ed2a051c32b4fe47a5e4fb95c20b03f, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2064,7 +2068,7 @@ GameObject:
   - component: {fileID: 1932311120}
   m_Layer: 0
   m_Name: EventSystem
-  m_TagString: Untagged
+  m_TagString: Manager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

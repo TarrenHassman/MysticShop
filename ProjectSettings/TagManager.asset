@@ -9,6 +9,7 @@ TagManager:
   - Ground
   - ListingUI
   - Listable
+  - Manager
   layers:
   - Default
   - TransparentFX

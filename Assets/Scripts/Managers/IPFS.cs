@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using JSONExporter;
@@ -9,37 +8,33 @@ using System.Threading.Tasks;
 public class IPFS : MonoBehaviour
 {
    Dictionary<string, JSONScene> Scenes;
-   IPFS Instance;
+   public static IPFS Instance;
 
-
-    public void Awake()
+   public void Awake()
     {
         Scenes = new Dictionary<string, JSONScene>();
         Instance = this;
         DontDestroyOnLoad(this);
     }
    
+#nullable enable
+    //Improve performance by using Jobs to upload each gameobject to IPFS through a job and then add the cids to a main file
     [Command]
     public async Task SaveScene(string sceneName)
     {
-        Debug.Log("Saving Scene");
-        string path = "Assets/Scenes/" + sceneName + ".txt";
+        string path = "Assets/Scenes/" + sceneName + ".json";
         List<string> ignoredTags = new List<string>();
-        ignoredTags.AddRange(new string[] { "Player", "MainCamera", "CinemachineTarget", "Ground" });
-        Debug.Log("Ignored Tags: " + ignoredTags.Count);
+        ignoredTags.AddRange(new string[] { "Player", "MainCamera", "CinemachineTarget", "Ground", "Manager" });
         UnityJSONExporter.RegisterCallback callback = new UnityJSONExporter.RegisterCallback(() => { });
-        Debug.Log("callback");
-        // var jsonScene = UnityJSONExporter.GenerateJSONScene(ignoredTags, false, false, true, callback);
         var jsonScene = UnityJSONExporter.GenerateJSONScene(ignoredTags, false, false, true, callback);
-        Debug.Log("jsonScene");
         JsonConverter[] converters = new JsonConverter[] { new BasicTypeConverter() };
-        Debug.Log("converters");
         string json = JsonConvert.SerializeObject(jsonScene, Formatting.Indented, converters);
-        string cid = "";
+        string? cid = null;
+        //Gzip data
+        json = StringCompressor.CompressString(json);
         //Save to local file
         System.IO.File.WriteAllText(path, json);
         //Save to IPFS
-        Debug.Log("Saving to IPFS");
         var temp = await ThirdwebManager.Instance.SDK.storage.UploadText(json);
         cid = temp.IpfsHash;
         //Save CID to PlayerPrefs
@@ -50,26 +45,51 @@ public class IPFS : MonoBehaviour
     [Command]
     public async Task LoadScene(string? cid)
     {
-        cid = cid ?? (PlayerPrefs.HasKey("CID") ? PlayerPrefs.GetString("CID") : "Don'tLoad");
         //Load from local file
-        //Load from IPFS
-        JSONScene temp = await ThirdwebManager.Instance.SDK.storage.DownloadText<JSONScene>(cid!);
-        GenerateScene(temp);
-        // UnityJSONImporter.ImportJSONScene(jsonScene, null);
+        // string sceneName = "example";
+        // string path = "Assets/Scenes/" + sceneName + ".json";
+        // if (System.IO.File.Exists(path))
+        // {
+        //     string json = System.IO.File.ReadAllText(path);
+        //     JSONScene temp = JsonConvert.DeserializeObject<JSONScene>(json);
+        //     GenerateScene(temp);
+        // }
+        // else
+        // {
+            //Load from IPFS
+            if (cid != null)
+            {
+                string compressed = await ThirdwebManager.Instance.SDK.storage.DownloadText<string>(cid!);
+                JSONScene? temp = JsonConvert.DeserializeObject<JSONScene>(StringCompressor.DecompressString(compressed));
+                GenerateScene(temp);
+            }   
+        // }
     }
-    public void GenerateScene(JSONScene scene){
-       scene.hierarchy.ForEach(o=>TraverseObjects(o));
-       DebugResources(scene.resources);
+    private void GenerateScene(JSONScene? scene)
+    {
+        if (scene != null)
+        {
+            Debug.Log(scene.name);
+            scene.hierarchy.ForEach(o => TraverseObject(o, null));
+            DebugResources(scene.resources);
+        }
     }
-    public void TraverseObjects(JSONGameObject obj){
+    public void TraverseObject(JSONGameObject obj, GameObject? parent){
         GameObject go = new GameObject(obj.name);
-        // go.transform.position = obj.position;
-        // go.transform.rotation = obj.rotation;
-        // go.transform.localScale = obj.scale;
-        Debug.Log(obj.name);
+        if (parent != null)
+        {
+            go.transform.SetParent(parent.transform);
+        }
+        go.transform.position = obj.GetComponent<JSONTransform>().localPosition;
+        go.transform.rotation = obj.GetComponent<JSONTransform>().localRotation;
+        go.transform.localScale = obj.GetComponent<JSONTransform>().localScale;
         obj.components.ForEach(c=>Debug.Log(c.type));
-        obj.children.ForEach(o=>TraverseObjects(o));
+        obj.children.ForEach(o=>
+        {
+            TraverseObject(o, go);
+        });
     }
+#nullable disable
     public void DebugResources(JSONResources res){
         res.textures.ForEach(t=>Debug.Log(t.name));
         res.lightmaps.ForEach(l=>Debug.Log(l.filename));
@@ -77,11 +97,12 @@ public class IPFS : MonoBehaviour
         res.materials.ForEach(m=>Debug.Log(m.name));
         res.meshes.ForEach(m=>Debug.Log(m.name));
     }
-    //Write to file?
+}
+
+public class JsonImporter
+{
+    
 }
 
 //TODO:
-//Tag managers/controllers and add to ignore tags
-//IPFS CID to PlayerPrefs
-//IPFS CID to Lobby
 //Generate Scene from JSONScene

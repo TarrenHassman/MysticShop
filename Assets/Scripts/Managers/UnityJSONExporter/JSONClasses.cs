@@ -86,20 +86,20 @@ public class JSONGameObject
 
         return null;
     }
-    public GameObject fromJson(string json){
-        GameObject o = new GameObject();
-        JSONGameObject jgo = JsonConvert.DeserializeObject<JSONGameObject>(json);
-        o.name = jgo.name;
-        o.SetActive(jgo.active);
-        o.transform.localPosition = jgo.GetComponent<JSONTransform>().localPosition;
-        o.transform.localRotation = jgo.GetComponent<JSONTransform>().localRotation;
-        o.transform.localScale = jgo.GetComponent<JSONTransform>().localScale;
-        MeshFilter filter = o.AddComponent<MeshFilter>();
-        filter.mesh = new Mesh();
-        filter.mesh.name = jgo.GetComponent<JSONMeshRenderer>().mesh;
-        MeshRenderer renderer = o.AddComponent<MeshRenderer>();
-        return o;
-    }
+    // public GameObject fromJson(string json){
+    //     GameObject o = new GameObject();
+    //     JSONGameObject jgo = JsonConvert.DeserializeObject<JSONGameObject>(json);
+    //     o.name = jgo.name;
+    //     o.SetActive(jgo.active);
+    //     o.transform.localPosition = jgo.GetComponent<JSONTransform>().localPosition;
+    //     o.transform.localRotation = jgo.GetComponent<JSONTransform>().localRotation;
+    //     o.transform.localScale = jgo.GetComponent<JSONTransform>().localScale;
+    //     MeshFilter filter = o.AddComponent<MeshFilter>();
+    //     filter.mesh = new Mesh();
+    //     filter.mesh.name = jgo.GetComponent<JSONMeshRenderer>().mesh;
+    //     MeshRenderer renderer = o.AddComponent<MeshRenderer>();
+    //     return o;
+    // }
 
 }
 
@@ -159,8 +159,9 @@ public class JSONMeshCollider : JSONComponent
 }
 
 //Add FORSALE info to JSON
-public class JSONForSale : JSONComponent{
-
+public class JSONSaleInfo : JSONComponent
+{
+    public string seller;
 }
 
 public class JSONRigidBody : JSONComponent

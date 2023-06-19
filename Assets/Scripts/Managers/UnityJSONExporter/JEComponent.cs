@@ -38,7 +38,7 @@ public class JEComponent : JEObject
     {
         throw new NotImplementedException("Attempting to call JEComponent ToJSON (override method)");
     }
-
+    static Dictionary<Type, Type> conversions;
     public static void Reset()
     {
         JETransform.Reset();
@@ -61,7 +61,7 @@ public class JEComponent : JEObject
                 
             Type dstType = typeof(JEGeneralComponent);
             Type knownType = null;
-            bool isKnownType = (conversions != null && conversions.TryGetValue(component.GetType(), out knownType));
+            bool isKnownType = conversions != null && conversions.TryGetValue(component.GetType(), out knownType);
             if(isKnownType)
             {
                 dstType = knownType;
@@ -101,9 +101,9 @@ public class JEComponent : JEObject
         RegisterConversion(typeof(Rigidbody), typeof(JERigidBody));
         RegisterConversion(typeof(Light), typeof(JELight));
         RegisterConversion(typeof(TimeOfDay), typeof(JETimeOfDay));
+        RegisterConversion(typeof(SaleInfo),typeof(JESaleInfo));
     }
 
-    static Dictionary<Type, Type> conversions;
 
 }
 

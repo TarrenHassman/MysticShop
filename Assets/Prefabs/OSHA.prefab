@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1819909466946734942}
   m_Layer: 0
   m_Name: OSHA
-  m_TagString: Untagged
+  m_TagString: Manager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -45,13 +45,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 117d91a2801e348f2890255b98860b33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objects:
-  - {fileID: 6085803555977049720, guid: 679db2332f47e4ec38170a1067e446a2, type: 3}
-  - {fileID: 3744133877081091469, guid: a2a060732547fe64581bb0cb3c2bdf1d, type: 3}
-  - {fileID: 7993119983977949264, guid: 9eb847ab97b24024588682c8601254cf, type: 3}
   layerMask:
     serializedVersion: 2
     m_Bits: 8
+  gridSize: 0
+  isGrid: 0
+  isRotating: 0
+  change: 0
+  MainMenuPrefab: {fileID: 0}
+  menuOpen: 0
 --- !u!114 &1819909466946734942
 MonoBehaviour:
   m_ObjectHideFlags: 0
